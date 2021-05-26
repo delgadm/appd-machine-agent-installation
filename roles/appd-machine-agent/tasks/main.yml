@@ -1,0 +1,45 @@
+---
+###############################################################
+# This role installs the AppDynamics machine agent
+###############################################################
+
+# - name: Copy the AppDynamics machine agent RPM to the target host
+#   copy:
+#     src: appdynamics-machine-agent-21.5.0.3130.x86_64.rpm
+#     dest: /home/delgadm/appdynamics-machine-agent-21.5.0.3130.x86_64.rpm
+#     owner: delgadm
+#     group: delgadm
+#     mode: '0644'
+#   become: yes
+
+- name: Copy the AppDynamics machine agent RPM to the target host
+  become: yes
+  get_url:
+    url: "https://download.appdynamics.com/download/prox/download-file/machine/21.5.0.3130/appdynamics-machine-agent-21.5.0.3130.x86_64.rpm"
+    dest: /home/delgadm/appdynamics-machine-agent-21.5.0.3130.x86_64.rpm
+    mode: 0644
+    force_basic_auth: yes
+    #headers: {Authorization: "Bearer eyJraWQiOiJ0VDZDS2o3MmxxcEcxWG15SFB5Rzgzc0RpRHB5NDh3OGhnd2kwWnQzUjVzIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULmlPM3pCaHk4bDdWUElqMS1aaVZ2RTY3ZXhvWExDS3A1VmVZcmJQMXQzYlEub2FydTZwZXh1dzgxOGRSSzAycDYiLCJpc3MiOiJodHRwczovL2FwcGQtaWRlbnRpdHkub2t0YS5jb20vb2F1dGgyL2F1c3B2bnAzdmtrclNIMk9RMnA2IiwiYXVkIjoibWljb3JzZXJ2aWNlcyIsImlhdCI6MTYyMTU2OTgyOCwiZXhwIjoxNjIxNjU2MjI4LCJjaWQiOiIwb2ExanMxMHQ3ekJjTENnRzJwNyIsInVpZCI6IjAwdTV6OHRwZjV3REJLU1FRMnA3Iiwic2NwIjpbIm9mZmxpbmVfYWNjZXNzIiwiZG93bmxvYWQiLCJvcGVuaWQiXSwic3ViIjoiZGVsZ2FkbUBjaXNjby5jb20ifQ.ZhzOro7Zhgm9j2AxMxiycXwjZiI7AHmhUQQybe10NKzwhLrL1aZBonr7Hk9aCNuNnqsuWMmdDpEHE0q8oQz9oaxDr8Cyi82IhgG2ILbzYsWxRH5JFSMDEbS6yY1bqri7O15Zn08E7TiEYQqaCfsF5fV7ZbtEH9HfUH6IbVkO4_y1BkNyZylCvHX17WV3JO9I9jI7jcwQf_vO4QHqY5pD2klU5V7W9W_3Ie-MAP5ou-mS_gA37j6SjItXwH5l2tN36ddmtwe-E_EWfo9SPXs_1_hJhDwEg6uSZgdqw0Hi36oemnwScH7hHOr1eLDS9A9tOaJcD2S2K723kANu5L1DxA;"}
+    headers: {Authorization: "Bearer eyJraWQiOiJ0VDZDS2o3MmxxcEcxWG15SFB5Rzgzc0RpRHB5NDh3OGhnd2kwWnQzUjVzIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULkFaZmlsZHB2ZlpFUlVjNENyRGNsU3NfNnAwVURWZUF2QTB5R3VUUWpHUDgub2FydWl0dzc2QnI4cjFPcEYycDYiLCJpc3MiOiJodHRwczovL2FwcGQtaWRlbnRpdHkub2t0YS5jb20vb2F1dGgyL2F1c3B2bnAzdmtrclNIMk9RMnA2IiwiYXVkIjoibWljb3JzZXJ2aWNlcyIsImlhdCI6MTYyMjA0MzgzMywiZXhwIjoxNjIyMTMwMjMzLCJjaWQiOiIwb2ExanMxMHQ3ekJjTENnRzJwNyIsInVpZCI6IjAwdTV6OHRwZjV3REJLU1FRMnA3Iiwic2NwIjpbIm9mZmxpbmVfYWNjZXNzIiwiZG93bmxvYWQiLCJvcGVuaWQiXSwic3ViIjoiZGVsZ2FkbUBjaXNjby5jb20ifQ.VhpnjG6OdXk43mTAOb13R7Y6ft5LnW2H7zR3qFAuB3gq5kH_j0CCAIjOoOpuheUUzpKGL905yjERmYYI6_pNOpoqcITKp0mPhJJx_F476dhFvkYp9y7qEKHnb8V2b3VmKfsDwT3h5EoKupuMqkabWjKDGr8lwLBXfzdy6j3zRM2eRspCpc0Ex1KHmATCwx11x3zGs-pdabISKJBO_E3YujSV0CdQzjIwyGMGxEFm6HfCbXDoNAe3QG2orUTvQlY1w1wkSlZvsqKbz9NBisHvnRbwNx_un7VPB_PtBDmpxcIrrRZv6vcjajwpJp8fMcFoGt2UUu4oCm4YOvh3RURG7Q;"}
+
+- name: Install the AppDynamics machine agent 
+  yum:
+    name: /home/delgadm/appdynamics-machine-agent-21.5.0.3130.x86_64.rpm
+    state: present
+    disable_gpg_check: yes
+
+- name: Copy the machine-agent controller-info.xml template
+  template:
+    src: roles/appd-machine-agent/templates/controller-info.xml.j2
+    dest: /opt/appdynamics/machine-agent/conf/controller-info.xml
+    owner: root
+    group: root
+    mode: 0777
+    backup: yes
+  notify:
+    - reload NetworkManager
+
+- name: Start the AppDynamics machine agent
+  service:
+    name: appdynamics-machine-agent
+    state: started
