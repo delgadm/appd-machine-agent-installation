@@ -18,20 +18,20 @@ variable "vsphere_server" {
   type        = string
   sensitive   = true
 }
-variable "mel-ssh-pub-key" {
-  description = "Mel's SSH pub key"
+variable "ssh-pub-key" {
+  description = "Service Account SSH pub key"
   type        = string
   sensitive   = true
 }
 
-variable "mel_delgado_username" {
-  description = "Mel Delgado's username"
+variable "service_account_username" {
+  description = "Service account username"
   type        = string
   sensitive   = true
 }
 
-variable "mel_delgado_password" {
-  description = "Mel Delgado's password"
+variable "service_account_password" {
+  description = "Service account password"
   type        = string
   sensitive   = true
 }
@@ -113,22 +113,20 @@ resource "vsphere_virtual_machine" "vm1" {
     "chmod 700 /home/delgadm/.ssh",
     "touch /home/delgadm/.ssh/authorized_keys",
     "chmod 600 /home/delgadm/.ssh/authorized_keys",
-    "echo ${var.mel-ssh-pub-key} >> /home/delgadm/.ssh/authorized_keys"
+    "echo ${var.ssh-pub-key} >> /home/delgadm/.ssh/authorized_keys"
     ]
 
     connection {
     type     = "ssh"
-    user     = "${var.mel_delgado_username}"
-    #user     = "root"
-    password = "${var.mel_delgado_password}"
-    #host     = "${vsphere_virtual_machine.vm1.default_ip_address}"
+    user     = "${var.service_account_username}"
+    password = "${var.service_account_password}"
     host     = "10.200.0.${101 + count.index}"
   }
 
   }
   
   provisioner "local-exec" {
-   command = "ansible-playbook -u delgadm -i apache-web-servers.txt main.yml"
+   command = "ansible-playbook -u delgadm -i apache-web-servers.txt main.yml --vault-password-file ./.vault_pass.txt"
    }
 
   clone {
