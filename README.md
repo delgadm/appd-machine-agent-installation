@@ -1,1 +1,2 @@
-# appd-machine-agent-installation
+# Automated deployment of virtual machines and AppDynamics Machine Agent
+ This repo contains and example of deploying a virtual machine in vSphere using Terraform. Ansible is called from Terraform to install 

@@ -16,6 +16,7 @@
     name: docker-ce
     state: installed
     update_cache: yes
+    disable_gpg_check: yes
 
 - name: Start Docker service
   service:
