@@ -1,5 +1,7 @@
 # Automated deployment of virtual machines and AppDynamics Machine Agent
- This repo contains and example of deploying a virtual machine in vSphere using Terraform. After Terraform provisions the virtual machines, a provisioner within Terraform calls the Ansible playbook which installs Apache, Docker, and the AppDynamics Machine Agent.
+ This solution is an example of how to get started with monitoring and observability using AppDynamics's Machine Agent. The example details how to use Terraform to deploy 5 virtual machines in vSphere followed by the installation of Apache and the AppDynamics Machine Agent using Ansible. After Terraform provisions the virtual machines, a provisioner within Terraform calls the Ansible playbook which installs Apache, Docker, and the AppDynamics Machine Agent.
+
+The main objective is to get you started with monitoring your infrastructure by showing you an automated way of getting the AppDynamics agent installed so that you have observability baked into your environment from the onset. We first start with the use case of monitoring virtual machines with follow-on use cases showing how Kubernetes clusters, databases, and applications are brought into the fold to ultimately provide a full-stack view of your operations in real time.
 
 ## Requirements
 
